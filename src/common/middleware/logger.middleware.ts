@@ -10,7 +10,6 @@ export class LoggerMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
     const startTime = new Date().getTime();
     try {
-      console.log("hello");
       next();
       const responseStatus = res.statusCode;
       logger.log(`${getTimeDelta(startTime)}ms ${req.ip} ${responseStatus} ${req.method} ${getUrl(req)}`);
