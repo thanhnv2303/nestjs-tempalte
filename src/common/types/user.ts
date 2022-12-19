@@ -2,12 +2,12 @@ import { Provider } from "./provider";
 
 
 export class User {
-  id: string;
+  _id: string;
   provider: Provider;
   providerId: string;
   username: string;
   name?: string;
-  roles?: string[];
+  role?: string;
   created_at: Date;
   updated_at: Date;
 }

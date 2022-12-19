@@ -1,34 +1,40 @@
-import { Column, CreateDateColumn, Entity, ObjectIdColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Provider } from "../common/types/provider";
+import { HydratedDocument } from "mongoose";
+import { v4 as uuid } from "uuid";
 
+const ROLES = ["ADMIN", "USER"];
 
-@Entity()
+export type UserDocument = HydratedDocument<User>;
+
+@Schema()
 export class User {
-  @PrimaryGeneratedColumn()
-  @ObjectIdColumn()
-  id: string;
+  // @Prop({ required: true, unique: true,type: MongooseSchema.Types.ObjectId })
+  @Prop({ required: true, unique: true, type: String, default: uuid })
+  _id: string;
 
-  @Column({ nullable: false })
+  @Prop()
   provider: Provider;
 
-  @Column({ nullable: false })
+  @Prop()
   providerId: string;
 
-  @Column({ nullable: false })
+  @Prop({ required: true, unique: true, message: "Name must be unique" })
   username: string;
 
-  @Column({ nullable: false })
+  @Prop()
   name?: string;
 
-  @Column({ nullable: true })
-  roles?: string[];
+  @Prop({ required: true, enum: ROLES, default: ROLES[1] })
+  roles?: string;
 
 
-  @Column()
-  @CreateDateColumn()
+  @Prop({ default: Date.now })
   created_at: Date;
 
-  @Column()
-  @UpdateDateColumn()
+  @Prop({ default: Date.now })
   updated_at: Date;
 }
+
+export const UserSchema = SchemaFactory.createForClass(User);
+UserSchema.index({ username: "hashed" });

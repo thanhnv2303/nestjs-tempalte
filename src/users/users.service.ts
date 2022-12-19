@@ -1,37 +1,39 @@
 import { Injectable } from "@nestjs/common";
 import { CreateUserDto } from "./dto/create-user.dto";
-import { v4 as uuid } from 'uuid';
+import { InjectModel } from "@nestjs/mongoose";
+import { User, UserDocument } from "./user.entity";
+import { Model } from "mongoose";
 
 export const cacheUser: any = {};
 
 @Injectable()
 export class UsersService {
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {
+  }
 
   create(user: CreateUserDto) {
-    const key = `${user.provider}_${user.providerId}`;
-    const id = uuid();
-    cacheUser[key] = { ...user, ...{ id } };
-
-    return cacheUser[key];
+    const createdUser = new this.userModel(user);
+    return createdUser.save();
   }
 
-  findOne(param) {
-    const key = `${param.where.provider}_${param.where.providerId}`;
-    return cacheUser[key];
+  findById(id: string) {
+    return this.userModel.findOne({ _id: id });
   }
 
-  findByUsername(username) {
-    for (const [ k,v ] of Object.entries(cacheUser)) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      if (v.username && v.username === username) {
-        return v;
-      }
-    }
-    return {};
+  findByUsername(username: string) {
+    return this.userModel.findOne({ username: username });
   }
 
-  findAll(param) {
-    return Object.values(cacheUser);
+  findByProviderId(providerId: string) {
+    return this.userModel.findOne({ providerId: providerId });
+  }
+
+  findByProviderNProviderId(provider: string, providerId: string) {
+    return this.userModel.findOne({ providerId: providerId, provider: provider });
+  }
+
+
+  findAll() {
+    return this.userModel.find();
   }
 }
