@@ -2,8 +2,15 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Provider } from "../common/types/provider";
 import { HydratedDocument } from "mongoose";
 import * as shortid from "shortid";
+import { Consumer } from "../kong/consumer/entities/consumer.entity";
 
 const ROLES = ["admin", "user"];
+
+export enum GROUP_ACL_ENUM {
+  goldUser = "gold-user",
+  silverUser = "silver-user",
+  bronzeUser = "bronze-user",
+}
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -27,6 +34,10 @@ export class User {
 
   @Prop({ required: true, default: [ROLES[1]] })
   roles?: string[];
+
+  @Prop()
+  kongConsumer?: Consumer;
+
 
 }
 

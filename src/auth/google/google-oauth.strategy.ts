@@ -35,6 +35,10 @@ export class GoogleOauthStrategy extends PassportStrategy(Strategy, "google") {
       });
     }
 
+    if (!user.kongConsumer) {
+      user.kongConsumer = await this.usersService.createKongConsumer(user.username);
+    }
+
     return user;
   }
 }

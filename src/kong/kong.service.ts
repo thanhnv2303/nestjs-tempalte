@@ -33,12 +33,21 @@ export class KongService {
       data: _data
 
     };
-    const { data } = await firstValueFrom(this.httpService.request<ResponseModel>(config).pipe(
-      catchError((error: AxiosError) => {
-        throw new HttpException(error.response.data, error.response.status);
-      })
-    ));
-    return data;
+    try {
+      const { data } = await firstValueFrom(this.httpService.request<ResponseModel>(config).pipe(
+        catchError((error: AxiosError) => {
+          this.logger.warn(`
+Error when  ${method} ${_url} ${error}
+Please recheck KONG_ADMIN and KONG_ADMIN_API_KEY in .env file
+        `);
+          throw new HttpException(`${error.message} code : ${error.code}`, error.status);
+        })
+      ));
+      return data;
+    } catch (e) {
+      this.logger.warn(e);
+    }
+
   };
 
 
