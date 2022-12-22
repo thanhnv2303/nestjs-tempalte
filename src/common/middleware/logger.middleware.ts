@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable, NestMiddleware } from "@nestjs/common";
+import { Injectable, NestMiddleware } from "@nestjs/common";
 import { NextFunction, Request, Response } from "express";
 import { Logger } from "@nestjs/common/services/logger.service";
 
@@ -14,7 +14,7 @@ export class LoggerMiddleware implements NestMiddleware {
       next();
       const code = res.statusCode;
       // const code2 = res.statusCode;
-      const responseStatus = res.statusCode
+      const responseStatus = res.statusCode;
       logger.log(`${getTimeDelta(startTime)}ms ${req.ip} ${responseStatus} ${req.method} ${getUrl(req)}`);
 
     } catch (e) {

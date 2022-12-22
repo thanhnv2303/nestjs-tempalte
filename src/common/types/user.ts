@@ -7,7 +7,7 @@ export class User {
   providerId: string;
   username: string;
   name?: string;
-  role?: string;
+  roles?: string[];
   created_at: Date;
   updated_at: Date;
 }
