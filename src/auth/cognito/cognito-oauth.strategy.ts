@@ -68,7 +68,7 @@ export class CognitoOauthStrategy extends PassportStrategy(
       providerId = userinfo.username;
     }
 
-    let user = await this.usersService.findByProviderId(providerId);
+    let user = await this.usersService.findByUsername(userinfo.email);
     if (!user) {
       user = await this.usersService.create({
         provider,

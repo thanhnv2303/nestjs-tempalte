@@ -1,1 +1,1 @@
-export type Provider = "google" | "cognito" | "local";
+export type Provider = "google" | "cognito" | "local" | "github";

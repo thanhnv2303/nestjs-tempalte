@@ -1,37 +1,39 @@
 import { PassportStrategy } from "@nestjs/passport";
-import { Profile, Strategy } from "passport-google-oauth20";
+import { Strategy } from "passport-github2";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { UsersService } from "../../users/users.service";
 
 @Injectable()
-export class GoogleOauthStrategy extends PassportStrategy(Strategy, "google") {
+export class GithubOauthStrategy extends PassportStrategy(Strategy, "github") {
   constructor(
     configService: ConfigService,
     private readonly usersService: UsersService
   ) {
     super({
-      clientID: configService.get<string>("OAUTH_GOOGLE_ID"),
-      clientSecret: configService.get<string>("OAUTH_GOOGLE_SECRET"),
-      callbackURL: configService.get<string>("OAUTH_GOOGLE_REDIRECT_URL"),
-      scope: ["email", "profile"]
+      clientID: configService.get<string>("OAUTH_GITHUB_ID"),
+      clientSecret: configService.get<string>("OAUTH_GITHUB_SECRET"),
+      callbackURL: configService.get<string>("OAUTH_GITHUB_REDIRECT_URL")
     });
   }
 
   async validate(
     _accessToken: string,
     _refreshToken: string,
-    profile: Profile
+    profile,
+    done: any
   ) {
-    const { id, name, emails } = profile;
+    const { id, username, emails } = profile;
 
-    let user = await this.usersService.findByUsername(emails[0].value);
+    // let user = await this.usersService.findByProviderNProviderId("github", id);
+    const _username = emails[0].value;
+    let user = await this.usersService.findByUsername(_username);
     if (!user) {
       user = await this.usersService.create({
-        provider: "google",
+        provider: "github",
         providerId: id,
-        name: name.givenName,
-        username: emails[0].value
+        name: username,
+        username: _username
       });
     }
 
