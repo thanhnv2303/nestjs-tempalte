@@ -11,5 +11,5 @@ services:
         ports:
             - 2327:3000
         env_file:
-            -   .env
+            -   .env.prod
         restart: unless-stopped
