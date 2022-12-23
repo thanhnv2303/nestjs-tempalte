@@ -2,7 +2,15 @@ import { Injectable } from "@nestjs/common";
 import { CreateConsumerDto } from "./dto/create-consumer.dto";
 import { UpdateConsumerDto } from "./dto/update-consumer.dto";
 import { KongService } from "../kong.service";
-import { Consumer, CredentialJWTAlgorithm, GroupACL, ListConsumer, ListGroupACL } from "./entities/consumer.entity";
+import {
+  Consumer,
+  CredentialJWT,
+  CredentialJWTAlgorithm,
+  GroupACL,
+  ListConsumer,
+  ListCredentialJWT,
+  ListGroupACL
+} from "./entities/consumer.entity";
 import { Logger } from "@nestjs/common/services/logger.service";
 
 @Injectable()
@@ -99,7 +107,7 @@ export class ConsumerService {
     const path = "/consumers/" + consumerUsernameOrID + "/jwt";
     const method = "post";
 
-    return await this.kongServices.sentRequestAdmin<GroupACL>(method, path, {
+    return await this.kongServices.sentRequestAdmin<CredentialJWT>(method, path, {
       key: key,
       secret: secret,
       algorithm: algorithm,
@@ -108,27 +116,27 @@ export class ConsumerService {
 
   }
 
-  async getAllCredentialJWT(consumerUsernameOrID: string): Promise<GroupACL[]> {
+  async getAllCredentialJWT(consumerUsernameOrID: string): Promise<CredentialJWT[]> {
     const path = "/consumers/" + consumerUsernameOrID + "/jwt";
     const method = "get";
 
-    return (await this.kongServices.sentRequestAdmin<ListGroupACL>(method, path)).data;
+    return (await this.kongServices.sentRequestAdmin<ListCredentialJWT>(method, path)).data;
 
   }
 
-  async getCredentialJWT(consumerUsernameOrID: string, credentialJwtKeyOrId: string): Promise<GroupACL> {
+  async getCredentialJWT(consumerUsernameOrID: string, credentialJwtKeyOrId: string): Promise<CredentialJWT> {
     const path = "/consumers/" + consumerUsernameOrID + "/jwt/" + credentialJwtKeyOrId;
     const method = "get";
 
-    return await this.kongServices.sentRequestAdmin<GroupACL>(method, path);
+    return await this.kongServices.sentRequestAdmin<CredentialJWT>(method, path);
 
   }
 
-  async deleteCredentialJWT(consumerUsernameOrID: string, credentialJwtKeyOrId: string): Promise<GroupACL> {
+  async deleteCredentialJWT(consumerUsernameOrID: string, credentialJwtKeyOrId: string) {
     const path = "/consumers/" + consumerUsernameOrID + "/jwt/" + credentialJwtKeyOrId;
     const method = "delete";
 
-    return await this.kongServices.sentRequestAdmin<GroupACL>(method, path);
+    return await this.kongServices.sentRequestAdmin(method, path);
 
   }
 

@@ -23,7 +23,11 @@ export class CognitoOauthController {
       httpOnly: true,
       sameSite: "lax"
     });
-    const redirectLoginUrl = req.redirectLoginUrl || "/";
-    return res.redirect(redirectLoginUrl);
+    // res.json()
+    // const redirectLoginUrl = req.redirectLoginUrl || "/";
+    // return res.redirect(redirectLoginUrl);
+    return res.json({
+      access_token: accessToken
+    });
   }
 }

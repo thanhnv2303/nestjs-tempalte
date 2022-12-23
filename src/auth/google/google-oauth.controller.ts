@@ -24,7 +24,10 @@ export class GoogleOauthController {
       httpOnly: true,
       sameSite: "lax"
     });
-    const redirectLoginUrl = req.redirectLoginUrl || "/users/profile";
-    return res.redirect(redirectLoginUrl);
+    // const redirectLoginUrl = req.redirectLoginUrl || "/users/profile";
+    // return res.redirect(redirectLoginUrl);
+    return res.json({
+      access_token: accessToken
+    });
   }
 }

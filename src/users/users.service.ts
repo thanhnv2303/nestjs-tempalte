@@ -4,11 +4,17 @@ import { InjectModel } from "@nestjs/mongoose";
 import { GROUP_ACL_ENUM, User, UserDocument } from "./user.entity";
 import { Model } from "mongoose";
 import { ConsumerService } from "../kong/consumer/consumer.service";
+import { ConfigService } from "@nestjs/config";
 
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>, private consumerService: ConsumerService) {
+  private applicationName;
+  private jwt_secret;
+
+  constructor(configService: ConfigService, @InjectModel(User.name) private userModel: Model<UserDocument>, private consumerService: ConsumerService) {
+    this.applicationName = configService.get<string>("APPLICATION_NAME");
+    this.jwt_secret = configService.get<string>("JWT_SECRET");
   }
 
   async create(user: CreateUserDto) {
@@ -20,13 +26,21 @@ export class UsersService {
   }
 
   async createKongConsumer(username: string) {
+    const APPLICATION_NAME = this.applicationName;
+    const JWT_SECRET = this.jwt_secret;
+
     // create kong consumer
     const consumer = await this.consumerService.create({
       username: username,
-      tags: ["auth-service"]
+      tags: [APPLICATION_NAME]
     });
     await this.consumerService.addGroupACL(username, GROUP_ACL_ENUM.bronzeUser);
+    await this.consumerService.addCredentialJWT(username, APPLICATION_NAME, JWT_SECRET);
     return consumer;
+  }
+
+  async createConsumerCredentialJWT(username) {
+    await this.consumerService.addCredentialJWT(username, this.applicationName, this.jwt_secret);
   }
 
   async findById(id: string) {
