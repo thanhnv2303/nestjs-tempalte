@@ -90,4 +90,39 @@ describe("ConsumerService", () => {
     await service.remove(userName);
   });
 
+  it("should be CURD Credential JWT", async () => {
+    const userName = "tt2";
+    const userId = "tt2";
+
+
+    //delete user if exist
+    await service.remove(userName);
+
+    //create user
+    const user = await service.create({
+      username: userName,
+      custom_id: userId
+    });
+
+    const key = "test";
+    const secret = "testtestestestsetestestestset";
+    //add Group ALCs
+    const credential = await service.addCredentialJWT(userName, key,secret);
+
+    //get All groups
+    const credentials = await service.getAllCredentialJWT(userName);
+
+    // get user group
+    const getedCredential = await service.getCredentialJWT(userName, key);
+
+    //delete userGroup
+    await service.deleteCredentialJWT(userName, key);
+
+    // get user group again
+    const getAgainCredential = await service.getCredentialJWT(userName, key);
+
+
+    await service.remove(userName);
+  });
+
 });
