@@ -45,19 +45,19 @@ export class UsersService {
 
   async findById(id: string) {
     const user: User = await this.userModel.findOne({ _id: id });
-    user.kongConsumer = await this.getKongConsumer(user.username);
+    if (user) user.kongConsumer = await this.getKongConsumer(user.username);
     return;
   }
 
   async findByUsername(username: string) {
     const user = await this.userModel.findOne({ username: username }).lean();
-    user.kongConsumer = await this.getKongConsumer(user.username);
+    if (user) user.kongConsumer = await this.getKongConsumer(user.username);
     return user;
   }
 
   async findByProviderId(providerId: string) {
     const user = await this.userModel.findOne({ providerId: providerId });
-    user.kongConsumer = await this.getKongConsumer(user.username);
+    if (user) user.kongConsumer = await this.getKongConsumer(user.username);
     return user;
   }
 
