@@ -35,7 +35,8 @@ export class UsersService {
       tags: [APPLICATION_NAME]
     });
     await this.consumerService.addGroupACL(username, GROUP_ACL_ENUM.bronzeUser);
-    await this.consumerService.addCredentialJWT(username, APPLICATION_NAME, JWT_SECRET);
+    const key = APPLICATION_NAME+"/"+username
+    await this.consumerService.addCredentialJWT(username, key, JWT_SECRET);
     return consumer;
   }
 
