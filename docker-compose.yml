@@ -1,15 +1,18 @@
 version: '3.8'
 
 services:
-    auth-service:
-        container_name: auth-service
-        image: auth-service:1.0.0
-        build:
-            context: .
-            dockerfile: ./Dockerfile
-        command: npm run start
-        ports:
-            - 2327:3000
-        env_file:
-            -   .env.prod
-        restart: unless-stopped
+  auth-service:
+    container_name: auth-service
+    image: auth-service:1.0.0
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: npm run start
+    ports:
+      - 2327:3000
+    env_file:
+      - .env.prod
+    volumes:
+      - ./secrets:/usr/src/app/secrets
+    restart: unless-stopped
+
