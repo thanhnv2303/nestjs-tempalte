@@ -6,9 +6,11 @@ import {
   Consumer,
   CredentialJWT,
   CredentialJWTAlgorithm,
+  CredentialKeyAuth,
   GroupACL,
   ListConsumer,
   ListCredentialJWT,
+  ListCredentialKeyAuth,
   ListGroupACL
 } from "./entities/consumer.entity";
 import { Logger } from "@nestjs/common/services/logger.service";
@@ -134,6 +136,44 @@ export class ConsumerService {
 
   async deleteCredentialJWT(consumerUsernameOrID: string, credentialJwtKeyOrId: string) {
     const path = "/consumers/" + consumerUsernameOrID + "/jwt/" + credentialJwtKeyOrId;
+    const method = "delete";
+
+    return await this.kongServices.sentRequestAdmin(method, path);
+
+  }
+
+  async addCredentialKeyAuth(
+    consumerUsernameOrID: string,
+    key?: string
+  ) {
+    const path = "/consumers/" + consumerUsernameOrID + "/key-auth";
+    const method = "post";
+    let body = {};
+    if (key) {
+      body = { key: key };
+    }
+    return await this.kongServices.sentRequestAdmin<CredentialKeyAuth>(method, path, body);
+
+  }
+
+  async getAllCredentialKeyAuth(consumerUsernameOrID: string): Promise<CredentialKeyAuth[]> {
+    const path = "/consumers/" + consumerUsernameOrID + "/key-auth";
+    const method = "get";
+
+    return (await this.kongServices.sentRequestAdmin<ListCredentialKeyAuth>(method, path)).data;
+
+  }
+
+  async getCredentialKeyAuth(consumerUsernameOrID: string, key: string): Promise<CredentialKeyAuth> {
+    const path = "/consumers/" + consumerUsernameOrID + "/key-auth/" + key;
+    const method = "get";
+
+    return await this.kongServices.sentRequestAdmin<CredentialKeyAuth>(method, path);
+
+  }
+
+  async deleteCredentialKeyAuth(consumerUsernameOrID: string, key: string) {
+    const path = "/consumers/" + consumerUsernameOrID + "/key-auth/" + key;
     const method = "delete";
 
     return await this.kongServices.sentRequestAdmin(method, path);

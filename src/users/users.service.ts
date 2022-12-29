@@ -35,7 +35,7 @@ export class UsersService {
       tags: [APPLICATION_NAME]
     });
     await this.consumerService.addGroupACL(username, GROUP_ACL_ENUM.bronzeUser);
-    const key = APPLICATION_NAME+"/"+username
+    const key = APPLICATION_NAME + "/" + username;
     await this.consumerService.addCredentialJWT(username, key, JWT_SECRET);
     return consumer;
   }
@@ -82,6 +82,14 @@ export class UsersService {
 
   deleteUserGroupAcl(username: string, group: string) {
     return this.consumerService.deleteGroupACL(username, group);
+  }
+
+  createKongKeyAuth(username: string) {
+    return this.consumerService.addCredentialKeyAuth(username);
+  }
+
+  getKongKeyAuths(username: string) {
+    return this.consumerService.getAllCredentialKeyAuth(username);
   }
 
   async remove(username: string) {

@@ -22,8 +22,26 @@ export class CredentialJWT {
   "id": string;
 }
 
+
 export class ListCredentialJWT {
   data: CredentialJWT[];
+  next: any;
+}
+
+export class CredentialKeyAuth {
+  "consumer": {
+    "id": string
+  };
+  "ttl": any;
+  "key": string;
+  "id": string;
+  "tags": any;
+  "created_at": number;
+}
+
+
+export class ListCredentialKeyAuth {
+  data: CredentialKeyAuth[];
   next: any;
 }
 
