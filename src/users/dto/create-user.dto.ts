@@ -6,4 +6,5 @@ export class CreateUserDto {
   providerId: string;
   username: string;
   name?: string;
+  email?: string;
 }

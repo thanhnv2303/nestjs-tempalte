@@ -32,6 +32,9 @@ export class User {
   @Prop()
   name?: string;
 
+  @Prop()
+  email?: string;
+
   @Prop({ required: true, default: [ROLES[1]] })
   roles?: string[];
 
