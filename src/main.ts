@@ -17,9 +17,10 @@ async function bootstrap() {
   }
 
   const app = await NestFactory.create(AppModule, { httpsOptions });
-  createSwagger(app);
+
   app.setGlobalPrefix(process.env.API_PREFIX || API_DEFAULT_PREFIX);
 
+  createSwagger(app);
   app.use(cookieParser());
 
   await app.listen(process.env.PORT || 3000, process.env.HOST || "0.0.0.0");
