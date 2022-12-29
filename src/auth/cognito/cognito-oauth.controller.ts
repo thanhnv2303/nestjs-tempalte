@@ -1,6 +1,6 @@
 import { Controller, Get, Req, Res, UseGuards } from "@nestjs/common";
 import { Request, Response } from "express";
-import { SESSION_COOKIE_KEY } from "src/config/constants";
+import { FRONT_END_REDIRECT_URL, SESSION_COOKIE_KEY } from "src/config/constants";
 import { JwtAuthService } from "../jwt/jwt-auth.service";
 import { CognitoOauthGuard } from "./cognito-oauth.guard";
 
@@ -23,11 +23,10 @@ export class CognitoOauthController {
       httpOnly: true,
       sameSite: "lax"
     });
-    // res.json()
-    // const redirectLoginUrl = req.redirectLoginUrl || "/";
-    // return res.redirect(redirectLoginUrl);
-    return res.json({
-      access_token: accessToken
-    });
+    const redirectLoginUrl = FRONT_END_REDIRECT_URL;
+    return res.redirect(redirectLoginUrl + `?token=${accessToken}`);
+    // return res.json({
+    //   access_token: accessToken
+    // });
   }
 }

@@ -2,7 +2,7 @@ import { Controller, Get, Req, Res, UseGuards } from "@nestjs/common";
 import { Request, Response } from "express";
 import { GithubOauthGuard } from "./github-oauth.guard";
 import { JwtAuthService } from "../jwt/jwt-auth.service";
-import { SESSION_COOKIE_KEY } from "src/config/constants";
+import { FRONT_END_REDIRECT_URL, SESSION_COOKIE_KEY } from "src/config/constants";
 
 @Controller("auth/github")
 export class GithubOauthController {
@@ -24,10 +24,10 @@ export class GithubOauthController {
       httpOnly: true,
       sameSite: "lax"
     });
-    // const redirectLoginUrl = req.redirectLoginUrl || "/users/profile";
-    // return res.redirect(redirectLoginUrl);
-    return res.json({
-      access_token: accessToken
-    });
+    const redirectLoginUrl = FRONT_END_REDIRECT_URL;
+    return res.redirect(redirectLoginUrl + `?token=${accessToken}`);
+    // return res.json({
+    //   access_token: accessToken
+    // });
   }
 }
