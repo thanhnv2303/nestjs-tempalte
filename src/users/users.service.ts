@@ -88,6 +88,10 @@ export class UsersService {
     return this.consumerService.addCredentialKeyAuth(username);
   }
 
+  deleteKongKeyAuth(username: string, key: string) {
+    return this.consumerService.deleteCredentialKeyAuth(username, key);
+  }
+
   getKongKeyAuths(username: string) {
     return this.consumerService.getAllCredentialKeyAuth(username);
   }
