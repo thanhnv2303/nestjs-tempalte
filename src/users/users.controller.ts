@@ -1,6 +1,8 @@
-import { Controller, Delete, Get, Post, Request, UseGuards } from "@nestjs/common";
+import { Controller, Delete, Get, Post, Request, Res, UseGuards } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { JwtAuthGuard } from "../auth/jwt/jwt-auth.guard";
+import { FRONT_END_REDIRECT_URL, SESSION_COOKIE_KEY } from "../config/constants";
+import { Response } from "express";
 
 @Controller("users")
 export class UsersController {
@@ -35,6 +37,17 @@ export class UsersController {
     const key = req.query.key;
     await this.usersService.deleteKongKeyAuth(user.username, key);
     return `Key ${key} deleted`;
+  }
+
+  @Get("logout")
+  @UseGuards(JwtAuthGuard)
+  async logout(@Request() req, @Res() res: Response) {
+    res.clearCookie(SESSION_COOKIE_KEY, {
+      httpOnly: true,
+      sameSite: "lax"
+    });
+    const redirectLoginUrl = FRONT_END_REDIRECT_URL;
+    return res.redirect(redirectLoginUrl);
   }
 
 
