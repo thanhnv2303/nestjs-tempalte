@@ -41,7 +41,9 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
     "shortid": "^2.2.16",
+    "telebot": "^1.4.1",
     "typeorm": "^0.3.11",
+    "validator": "^13.7.0",
     "winston": "^3.8.2"
   },
   "devDependencies": {

@@ -7,21 +7,22 @@ const logger = new Logger();
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
 
-  use(req: Request, res: Response, next: NextFunction) {
+  async use(req: Request, res: Response, next: NextFunction) {
     const startTime = new Date().getTime();
-    try {
-      // console.log("hello");
-      next();
-      const code = res.statusCode;
-      // const code2 = res.statusCode;
-      const responseStatus = res.statusCode;
-      logger.log(`${getTimeDelta(startTime)}ms ${req.ip} ${responseStatus} ${req.method} ${getUrl(req)}`);
+    next();
+    res.on("close", () => {
+      try {
+        const { statusCode } = res;
+        const contentLength = res.get("content-length");
 
-    } catch (e) {
-      logger.error(`${getTimeDelta(startTime)}ms ${req.ip} ${e.status} ${req.method} ${getUrl(req)}`);
-      logger.error(e);
-    }
+        logger.log(`${getTimeDelta(startTime)}ms ${contentLength} ${req.ip} ${statusCode} ${req.method} ${getUrl(req)}`);
+        const code = res.statusCode;
 
+      } catch (e) {
+        logger.error(`${getTimeDelta(startTime)}ms ${req.ip} ${e.status} ${req.method} ${getUrl(req)}`);
+        logger.error(e);
+      }
+    });
   }
 
 

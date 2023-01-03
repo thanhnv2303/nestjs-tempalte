@@ -7,6 +7,7 @@ import { AuthModule } from "./auth/auth.module";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
 import { KongModule } from './kong/kong.module';
+import { ContactModule } from './contact/contact.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { KongModule } from './kong/kong.module';
     UsersModule,
     AuthModule,
     KongModule,
+    ContactModule,
     ],
   controllers: [AppController],
   providers: [AppService]
