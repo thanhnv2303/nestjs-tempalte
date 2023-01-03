@@ -29,8 +29,8 @@ export class GithubOauthStrategy extends PassportStrategy(Strategy, "github") {
     let _username = username;
     let email = null;
     if (emails && emails.length>0){
-      _username = emails[0].values
-      email = emails[0].values
+      _username = emails[0].value
+      email = emails[0].value
     }
     let user = await this.usersService.findByUsername(_username);
     if (!user) {
