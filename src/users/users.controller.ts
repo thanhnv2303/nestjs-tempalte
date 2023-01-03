@@ -40,7 +40,6 @@ export class UsersController {
   }
 
   @Get("logout")
-  @UseGuards(JwtAuthGuard)
   async logout(@Request() req, @Res() res: Response) {
     res.clearCookie(SESSION_COOKIE_KEY, {
       httpOnly: true,
