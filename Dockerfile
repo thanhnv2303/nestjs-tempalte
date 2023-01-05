@@ -12,3 +12,4 @@ COPY tsconfig.build.json tsconfig.build.json
 COPY nest-cli.json nest-cli.json
 
 RUN npm run build
+RUN npm install pm2
