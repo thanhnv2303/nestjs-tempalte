@@ -1,6 +1,5 @@
-import { Controller, Get, Request, UseGuards } from "@nestjs/common";
+import { Controller, Get, Request } from "@nestjs/common";
 import { AppService } from "./app.service";
-import { JwtAuthGuard } from "./auth/jwt/jwt-auth.guard";
 
 @Controller()
 export class AppController {
@@ -12,9 +11,4 @@ export class AppController {
     return `Hello world` ;
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get("profile")
-  getPrivate(@Request() req) {
-    return req.user;
-  }
 }

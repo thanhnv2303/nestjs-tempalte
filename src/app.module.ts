@@ -2,11 +2,9 @@ import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { LoggerMiddleware } from "./common/middleware/logger.middleware";
-import { UsersModule } from "./users/users.module";
-import { AuthModule } from "./auth/auth.module";
+
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
-import { KongModule } from './kong/kong.module';
 import { ContactModule } from './contact/contact.module';
 
 @Module({
@@ -21,9 +19,6 @@ import { ContactModule } from './contact/contact.module';
       }),
       inject: [ConfigService]
     }),
-    UsersModule,
-    AuthModule,
-    KongModule,
     ContactModule,
     ],
   controllers: [AppController],
