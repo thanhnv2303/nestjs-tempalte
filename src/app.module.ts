@@ -5,7 +5,6 @@ import { LoggerMiddleware } from "./common/middleware/logger.middleware";
 
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
-import { ContactModule } from './contact/contact.module';
 
 @Module({
   imports: [
@@ -19,7 +18,6 @@ import { ContactModule } from './contact/contact.module';
       }),
       inject: [ConfigService]
     }),
-    ContactModule,
     ],
   controllers: [AppController],
   providers: [AppService]

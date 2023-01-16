@@ -1,5 +1,5 @@
 {
-  "name": "auth-services",
+  "name": "Vottery-Operating-System",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -25,6 +25,7 @@
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
+    "@nestjs/platform-express": "^9.2.1",
     "@nestjs/mongoose": "^9.2.1",
     "@nestjs/swagger": "^6.1.4",
     "axios": "1.2.1",
