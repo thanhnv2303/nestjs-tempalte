@@ -1,4 +1,7 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateVotteryDto } from './create-vottery.dto';
+export class AddFundVotteryDto {
+  amount: string;
+}
 
-export class UpdateVotteryDto extends PartialType(CreateVotteryDto) {}
+export class RecoverFundVotteryDto {
+  amount: string;
+}

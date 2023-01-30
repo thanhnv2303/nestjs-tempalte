@@ -2,6 +2,8 @@ import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { createSwagger } from "./common/setup/swagger";
 import * as fs from "fs";
+import { SCHEDULER_DASHBOARD_PATH } from "./scheduler/const";
+import dashboard from "./scheduler/dashboard";
 
 const API_DEFAULT_PREFIX = "/";
 
@@ -20,6 +22,9 @@ async function bootstrap() {
   app.setGlobalPrefix(process.env.API_PREFIX || API_DEFAULT_PREFIX);
 
   createSwagger(app);
+
+  // app.use(SCHEDULER_DASHBOARD_PATH, serverAdapter.getRouter());
+  app.use(SCHEDULER_DASHBOARD_PATH, dashboard.router);
 
   await app.listen(process.env.PORT || 3000, process.env.HOST || "0.0.0.0");
 

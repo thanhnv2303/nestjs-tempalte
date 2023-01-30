@@ -1,24 +1,25 @@
-import {Injectable} from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class VotteryRNGService {
-    updateTriggerTimestamp() {
-        return
-    }
 
-    checkUpkeep(requestId: string) {
-        return
-    }
+  updateTriggerTimestamp(address: string) {
+    return;
+  }
 
-    performUpkeep() {
-        return
-    }
+  checkUpkeep(address: string, requestId: string) {
+    return;
+  }
 
-    getRequestId() {
-        return
-    }
+  performUpkeep(address: string) {
+    return;
+  }
 
-    getRandomNumber() {
-        return
-    }
+  getRequestId(address: string, index: string) {
+    return;
+  }
+
+  getRandomNumber(address: string, requestId: string) {
+    return;
+  }
 }

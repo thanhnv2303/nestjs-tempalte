@@ -1,34 +1,29 @@
-import {Injectable} from '@nestjs/common';
-import {UpdateVotteryDto} from './dto/update-vottery.dto';
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class VotteryService {
 
-    findAll() {
-        return `This action returns all vottery`;
-    }
+  findAll(votteryAddress: string) {
+    return `This action returns all vottery`;
+  }
 
-    findOne() {
-        return
-    }
+  findOne(votteryAddress, id) {
+    return;
+  }
 
-    updateConfig() {
-        return
-    }
+  updateConfig(votteryAddress, id, config: any) {
+    return;
+  }
 
-    remove(id: string) {
-        return `This action removes a #${id} vottery`;
-    }
+  drawFinalNumber(votteryAddress, id) {
+    return;
+  }
 
-    drawFinalNumber() {
-        return
-    }
+  addFund(votteryAddress, id, amount: string) {
+    return;
+  }
 
-    addFund() {
-        return
-    }
-
-    recoverFund() {
-        return
-    }
+  recoverFund(votteryAddress, id, amount: string) {
+    return;
+  }
 }
