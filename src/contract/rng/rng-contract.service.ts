@@ -3,6 +3,19 @@ import { BigNumber, Contract, ContractFactory, ethers } from "ethers";
 import { ContractInterface } from "@ethersproject/contracts/src.ts";
 import { BaseProvider } from "@ethersproject/providers/src.ts/base-provider";
 import { Signer } from "@ethersproject/abstract-signer/src.ts";
+import { HttpException, HttpStatus } from "@nestjs/common";
+
+enum RNG_EXCEPTION {
+  CALL_ERROR = "CALL_ERROR",
+}
+
+function RNGCallContractException(message) {
+  const error = new HttpException(message, HttpStatus.BAD_REQUEST);
+  error.name = RNG_EXCEPTION.CALL_ERROR;
+  return error;
+}
+
+RNGCallContractException.prototype = Object.create(Error.prototype);
 
 export class RngContractService {
   get signer(): Signer {
@@ -81,9 +94,11 @@ export class RngContractService {
     return this.contract.updateTriggerTimestamp(timestamp, config);
   }
 
-  checkUpkeep(checkData = "") {
+  async checkUpkeep(checkData = "") {
     const value = ethers.utils.formatBytes32String(checkData);
-    return this.contract.checkUpkeep(value);
+    const checkUpkeep = await this.contract.checkUpkeep(value);
+    const upkeepNeeded = checkUpkeep.upkeepNeeded;
+    return upkeepNeeded;
   }
 
   performUpkeep(callData = "", config = {}) {
@@ -99,20 +114,33 @@ export class RngContractService {
     return this.contract.getRequestConfirmations();
   }
 
-  getNumberOfRequests():BigNumber {
+  getNumberOfRequests(): Promise<BigNumber> {
     return this.contract.getNumberOfRequests();
   }
 
-  getRequestId(index: BigNumber | number):BigNumber {
-    return this.contract.getRequestId(index);
+  async getRequestId(index: BigNumber | number): Promise<BigNumber> {
+    let requestId = undefined;
+
+    try {
+      requestId = await this.contract.getRequestId(index);
+    } catch (e) {
+      const maxIndex = await this.getNumberOfRequests();
+      if (maxIndex.lte(index))
+        throw RNGCallContractException(`call method get RequestId by index error: expect index < maxIndex = ${maxIndex}, got: ${index} `);
+      throw e;
+    }
+
+    return requestId;
   }
 
-  getTriggerTimestamp() {
+  getTriggerTimestamp(): Promise<BigNumber> {
     return this.contract.getTriggerTimestamp();
   }
 
-  getRandomNumber(requestId: BigNumber | number):BigNumber {
-    return this.contract.getRandomNumber(requestId);
+  async getRandomNumber(requestId: BigNumber): Promise<BigNumber> {
+    const r: BigNumber = await this.contract.getRandomNumber(requestId);
+    if (r.eq(0)) throw RNGCallContractException(`requestId ${requestId._hex} not found`);
+    return r;
   }
 
 }

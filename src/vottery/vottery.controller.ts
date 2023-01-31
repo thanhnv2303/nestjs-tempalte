@@ -47,7 +47,7 @@ export class VotteryController {
   @ApiOperation({summary:'Withdraw remain fund of Vottery when the claim reward duration pass'})
   @Post(":address/:id/recover-fund")
   recoverFund(@Param("address") address: string, @Param("id") id: string, @Body() recoverFundVotteryDto: RecoverFundVotteryDto) {
-    return this.votteryService.addFund(address, id, recoverFundVotteryDto.amount);
+    return this.votteryService.recoverFund(address, id, recoverFundVotteryDto.amount);
   }
 
 }

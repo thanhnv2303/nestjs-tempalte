@@ -1,14 +1,27 @@
-import { Injectable } from "@nestjs/common";
+import { CACHE_MANAGER, Inject, Injectable } from "@nestjs/common";
+import { Cache } from "cache-manager";
+import { VotteryAddresser } from "./vottery.addresser";
 
 @Injectable()
 export class VotteryService {
 
-  findAll(votteryAddress: string) {
+  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {
+  }
+
+  findAll(votteryPoolAddress: string) {
     return `This action returns all vottery`;
   }
 
-  findOne(votteryAddress, id) {
-    return;
+  async findOne(votteryPoolAddress, id) {
+    const votteryKey = VotteryAddresser.getVotteryKey(votteryPoolAddress, id);
+    let vottery = await this.cacheManager.get(votteryKey);
+    if (!vottery) {
+      // get vottery info
+      vottery = {};
+      // load to cache
+      await this.cacheManager.set(votteryKey, vottery);
+    }
+    return vottery;
   }
 
   updateConfig(votteryAddress, id, config: any) {
@@ -16,6 +29,7 @@ export class VotteryService {
   }
 
   drawFinalNumber(votteryAddress, id) {
+
     return;
   }
 

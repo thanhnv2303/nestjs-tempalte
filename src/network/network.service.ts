@@ -6,11 +6,11 @@ import { Network } from "./entities/network.entity";
 export class NetworkService {
   async getNetworkById(chainId: string): Promise<Network> {
     const network = Networks.find(e => e.chain_id == chainId);
-    if (!network) throw new HttpException("Network is not supported", HttpStatus.BAD_REQUEST);
+    if (!network) throw new HttpException(`Network ${chainId} is not supported`, HttpStatus.BAD_REQUEST);
     return network;
   }
 
-  async getAll(offset?, limit?, keySearch?): Promise<Network[]> {
+  async getAll(): Promise<Network[]> {
     // return Networks;
 
     const networks = Networks;
