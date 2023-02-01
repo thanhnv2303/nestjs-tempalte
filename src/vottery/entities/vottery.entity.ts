@@ -14,7 +14,7 @@ export class Vottery {
   end: number;
   @ApiProperty({ description: "Timestamp end claim reward Votter", example: 1675084005 })
   claimPeriod: number;
-  @ApiProperty({ description: "Random number generate contract address", example: "0x1345345abe..." })
+  @ApiProperty({ description: "Random number generate contract network id ", example: "97" })
   rngNetwork: string;
   @ApiProperty({ description: "Random number generate contract address", example: "0x1345345abe..." })
   rngContractAddress: string;

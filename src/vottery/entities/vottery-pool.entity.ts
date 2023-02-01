@@ -18,5 +18,27 @@ export class VotteryPool {
   @ApiProperty({ description: "Current Vottery deposited", example: "123456789" })
   totalDeposit?: string;
   config?: any;
+  @ApiProperty({ description: "Vottery Pool auto run enable , default is false", example: false })
+  automation?: boolean;
+  @ApiProperty({
+    description: "Vottery Pool auto run scheduler",
+    example: {
+      createVotteryExpression: "0 0 12 ? * SUN"
+    }
+  })
+  scheduler?;
+}
+
+export class VotteryScheduler {
+  @ApiProperty({ description: "Vottery Pool auto run enable , default is false", example: false })
+  createVotteryExpression: string;
+  @ApiProperty({ description: "Vottery Pool auto run enable , default is false", example: false })
+  addFundVotteryExpression: string;
+  @ApiProperty({ description: "Timestamp end claim reward Votter", example: 1675084005 })
+  votteryDuration: number;
+  @ApiProperty({ description: "Timestamp end claim reward Votter", example: 1675084005 })
+  claimPeriod: number;
 
 }
+
+
