@@ -28,16 +28,32 @@ export class VotteryService {
     return;
   }
 
+  /**
+   * `Draw finnal number of vottery ${id}, pool ${votteryAddress}`
+   * @param votteryAddress
+   * @param id
+   */
   drawFinalNumber(votteryAddress, id) {
-
-    return;
+    return `Draw finnal number of vottery ${id}, pool ${votteryAddress}`;
   }
 
+  /**
+   * Add fund ${amount}token to vottery ${id} of pool ${votteryAddress}
+   * @param votteryAddress
+   * @param id
+   * @param amount
+   */
   addFund(votteryAddress, id, amount: string) {
-    return;
+    return `Add fund ${amount}token to vottery ${id} of pool ${votteryAddress}`;
   }
 
+  /**
+   * `Withdraw fund ${amount}token to vottery ${id} of pool ${votteryAddress}`
+   * @param votteryAddress
+   * @param id
+   * @param amount
+   */
   recoverFund(votteryAddress, id, amount: string) {
-    return;
+    return `Withdraw fund ${amount}token to vottery ${id} of pool ${votteryAddress}`;
   }
 }
