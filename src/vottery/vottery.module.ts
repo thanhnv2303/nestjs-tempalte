@@ -6,12 +6,15 @@ import { VotteryPoolService } from "./vottery-pool.service";
 import { VotteryPoolController } from "./vottery-pool.controller";
 import { VotteryRngController } from "./vottery-rng.controller";
 import { NetworkModule } from "../network/network.module";
+import { VotteryPool, VotteryPoolSchema } from "./schemas/vottery-pool.schema";
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
     CacheModule.register({
       ttl: 86400
     }),
+    MongooseModule.forFeature([{ name: VotteryPool.name, schema: VotteryPoolSchema }]),
     NetworkModule
   ],
   controllers: [VotteryController, VotteryPoolController, VotteryRngController],

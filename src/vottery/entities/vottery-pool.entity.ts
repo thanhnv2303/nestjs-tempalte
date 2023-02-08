@@ -38,7 +38,6 @@ export class VotteryScheduler {
   votteryDuration: number;
   @ApiProperty({ description: "Timestamp end claim reward Votter", example: 1675084005 })
   claimPeriod: number;
-
 }
 
 

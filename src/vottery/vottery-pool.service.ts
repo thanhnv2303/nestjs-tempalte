@@ -1,8 +1,15 @@
 import { Injectable } from "@nestjs/common";
 import { CreateVotteryDto, CreateVotteryPoolDto } from "./dto/create-vottery.dto";
+import { schedularCreateVotteryJob, schedularAddFundJob } from "src/scheduler/producer"
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from 'mongoose';
+import { VotteryPool, VotteryPoolDocument } from "./schemas/vottery-pool.schema";
 
 @Injectable()
 export class VotteryPoolService {
+  constructor(
+    @InjectModel(VotteryPool.name) private readonly votteryPoolModel: Model<VotteryPoolDocument>,
+  ) {}
 
   /**
    * This action adds a new vottery pool and return a Vottery Poll contract address
@@ -57,5 +64,27 @@ export class VotteryPoolService {
     return `This method allows to deposit ${amount} token from operator address to Vottery pool ${address}`;
   }
 
+  /**
+   * This method allows to schedular create vottery
+   * @param address
+   */
+  schedularCreateLottery(address: string) {
+    // Delete old job
+    //
+    // Create task scheduler
+
+    return `This method allows to schedular create vottery`
+  }
+
+  async schedularAddFund(address: string, addFundVotteryExpression: string) {
+    const votteryPool = await this.votteryPoolModel.findOneAndUpdate(
+      { address: address },
+      { $set: { 'scheduler.addFundVotteryExpression': addFundVotteryExpression }},
+      { returnDocument: 'after', upsert: true }
+    ).exec();
+
+    await schedularAddFundJob(`addFund-${votteryPool.network}`, votteryPool, addFundVotteryExpression);
+    return votteryPool;
+  }
 
 }

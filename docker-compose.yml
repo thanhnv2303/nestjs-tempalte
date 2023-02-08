@@ -3,10 +3,11 @@ version: '3.8'
 services:
   vottery-operating-backend:
     container_name: vottery-operating-backend
-    image: vottery-operating-system:1.0.0
+    <<: &default
+      image: vottery-operating-system:1.0.0
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: Dockerfile
     command: yarn pm2-runtime start ./dist/main.js -i max
     ports:
       - 2323:3000
@@ -15,4 +16,10 @@ services:
     volumes:
       - ./secrets:/usr/src/app/secrets
     restart: unless-stopped
-
+  vottery-operating-worker:
+    container_name: vottery-operating-worker
+    <<: *default
+    env_file:
+      - .env.prod
+    command: yarn pm2-runtime start ./dist/scheduler/worker.js -i max
+    restart: unless-stopped
