@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { CreateVotteryDto, CreateVotteryPoolDto } from "./dto/create-vottery.dto";
-import { schedularCreateVotteryJob, schedularAddFundJob } from "src/scheduler/producer"
+import { schedularCreateVotteryJob, schedularAddFundJob, removeRepeatableJob, removeDelayedJob } from "src/scheduler/producer"
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from 'mongoose';
 import { VotteryPool, VotteryPoolDocument } from "./schemas/vottery-pool.schema";
@@ -65,26 +65,27 @@ export class VotteryPoolService {
   }
 
   /**
-   * This method allows to schedular create vottery
+   * This method allows to update schedular vottery
    * @param address
+   * @param automation
+   * @param schedular
    */
-  schedularCreateLottery(address: string) {
-    // Delete old job
-    //
-    // Create task scheduler
-
-    return `This method allows to schedular create vottery`
-  }
-
-  async schedularAddFund(address: string, addFundVotteryExpression: string) {
+  async updateVotteryPoolSchedular(address: string, automation: boolean, schedular: object) {
     const votteryPool = await this.votteryPoolModel.findOneAndUpdate(
       { address: address },
-      { $set: { 'scheduler.addFundVotteryExpression': addFundVotteryExpression }},
+      { $set: { automation: automation, scheduler: schedular }},
       { returnDocument: 'after', upsert: true }
     ).exec();
 
-    await schedularAddFundJob(`addFund-${votteryPool.network}`, votteryPool, addFundVotteryExpression);
-    return votteryPool;
+    if (automation) {
+      await schedularAddFundJob(`addFund-${votteryPool.network}`, votteryPool, schedular["addFundVotteryExpression"])
+      await schedularCreateVotteryJob(`createVottery-${votteryPool.network}`, votteryPool, schedular["createVotteryExpression"])
+    } else {
+      await removeRepeatableJob(`addFund-${votteryPool.network}`)
+      await removeRepeatableJob(`createVottery-${votteryPool.network}`)
+      await removeDelayedJob(`addFund-${votteryPool.network}`)
+      await removeDelayedJob(`createVottery-${votteryPool.network}`)
+    }
+    return votteryPool
   }
-
 }

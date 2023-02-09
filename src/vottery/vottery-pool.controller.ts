@@ -1,8 +1,7 @@
 import { Controller, Get, Post, Put, Body, Patch, Param, Delete } from "@nestjs/common";
 import { CreateVotteryDto, CreateVotteryPoolDto } from "./dto/create-vottery.dto";
-import { UpdateSchedularAddFund } from "./dto/update-schedular-add-fund.dto";
 import { VotteryPoolService } from "./vottery-pool.service";
-import { UpdateRNGContractAddress } from "./dto/update-vottery-pool.dto";
+import { UpdateRNGContractAddress, UpdateVotteryPoolSchedular } from "./dto/update-vottery-pool.dto";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 
 
@@ -62,15 +61,9 @@ export class VotteryPoolController {
     return this.votteryPoolService.withdrawVotteryPoolFund(address, amount);
   }
 
-  @ApiOperation({ summary: "Update schedular create vottery information"})
-  @Put(":address/schedular-create-lottery")
-  schedularCreateLottery(@Param("address") address: string) {
-    return this.votteryPoolService.schedularCreateLottery(address);
-  }
-
-  @ApiOperation({ summary: "Schedular add fund from vottery pool to vottery" })
-  @Put(":address/schedular-add-fund")
-  schedularAddFund(@Param("address") address: string, @Body() updateSchedularAddFund: UpdateSchedularAddFund) {
-    return this.votteryPoolService.schedularAddFund(address, updateSchedularAddFund.addFundVotteryExpression);
+  @ApiOperation({ summary: "Update vottery pool schedular information " })
+  @Put(":address/schedular")
+  schedular(@Param("address") address: string, @Body() updateVotteryPoolSchedular: UpdateVotteryPoolSchedular) {
+    return this.votteryPoolService.updateVotteryPoolSchedular(address, updateVotteryPoolSchedular.automation, updateVotteryPoolSchedular.schedular);
   }
 }
