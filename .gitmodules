@@ -1,0 +1,3 @@
+[submodule "src/contract/lottery-contract"]
+	path = src/contract/lottery-contract
+	url = git@github.com:vchain-zone/lottery-contract.git

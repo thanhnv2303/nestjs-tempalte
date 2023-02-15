@@ -23,6 +23,7 @@
   "dependencies": {
     "@bull-board/express": "^4.10.2",
     "@bull-monitor/express": "^5.1.0",
+    "@cosmjs/cosmwasm-stargate": "^0.29.5",
     "@nestjs/axios": "1.0.1",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
@@ -30,6 +31,7 @@
     "@nestjs/mongoose": "^9.2.1",
     "@nestjs/platform-express": "^9.2.1",
     "@nestjs/swagger": "^6.1.4",
+    "@tovchain/cosms": "^0.8.9-ibc-beta-2",
     "ajv": "^8.12.0",
     "axios": "1.2.1",
     "bullmq": "^3.5.7",
