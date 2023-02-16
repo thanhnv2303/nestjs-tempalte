@@ -12,7 +12,7 @@ let wallet: Wallet;
 const prefix = "orai";
 const denom = "orai";
 const m = 'river art invite misery warm input decorate marriage grace already cabbage scout churn cart country laptop supreme pipe divide metal path same replace gather';
-const VOTTERY_ADDRESS = "orai15eew7v8dm39e4zyll6l768ph7ueqhqwehdsfd24pxnt5f6lzy6lss60kg2";
+const VOTTERY_ADDRESS = "orai1ykh3sgq9ll6jy9u8jvvhycf004gyxvcxduvjsk9lv7k6uhxgre7spzwu7f";
 
 let currentBlock;
 
@@ -51,15 +51,18 @@ describe("Test VotteryContractService", () => {
       ],
       gas: '20000000' // 180k
     };
-    const tx =await service.buyTickets({ticketCount:1},fee);
+    const funds = [
+        {
+          denom: denom,
+          amount: '100000'
+        }
+      ]
+    ;
+    const tx =await service.buyTickets({ticketCount:1},fee,"thanh buy",funds);
     console.log(tx);
     const player =await service.getPlayers();
     console.log(player);
     const ticketCountResponse =await service.getPlayerTicketCount({addr:wallet.address});
     console.log(ticketCountResponse);
-
-    service.
-
-
   });
 });
